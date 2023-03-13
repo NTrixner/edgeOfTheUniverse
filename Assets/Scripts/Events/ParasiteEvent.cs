@@ -56,7 +56,7 @@ public class ParasiteEvent : MonoBehaviour, BaseEvent
         float roll = Random.Range(0f, 1f);
         if (killed == 0f)
         {
-            if (killed <= 0.05f)
+            if (roll <= 0.05f)
             {
                 return
                     "We were really lucky! Thankfully, one of our clones was able to kill the parasite without any further issues.";
