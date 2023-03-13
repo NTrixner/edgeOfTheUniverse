@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Image))]
+[RequireComponent(typeof(Image), typeof(AudioSource))]
 public class EventSpawnerSystem : MonoBehaviour
 {
     public static EventSpawnerSystem INSTANCE;
@@ -21,6 +21,8 @@ public class EventSpawnerSystem : MonoBehaviour
     [SerializeField] private EventChance[] EventChances;
 
     [SerializeField] private GameObject Panel;
+
+    [SerializeField] private AudioSource alertSource;
 
     private BaseEvent currentEvent;
     private List<GameObject> buttons = new();
@@ -46,8 +48,10 @@ public class EventSpawnerSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FTLMovement.INSTANCE.CompletelyStoppedTravelling.AddListener(SpawnEvent);
         DayCounter.INSTANCE.DayPassed.AddListener(DayPassed);
+        DayCounter.INSTANCE.DayPassed.AddListener(SpawnEvent);
+        if(alertSource == null)
+            alertSource = GetComponent<AudioSource>();
     }
 
     private void DayPassed()
@@ -62,6 +66,7 @@ public class EventSpawnerSystem : MonoBehaviour
             FTLMovement.INSTANCE.Disable();
             DayCounter.INSTANCE.TimeMoving = false;
             Panel.SetActive(true);
+            alertSource.Play();
             GameObject eventPrefab = GetRandomEvent();
             //Now the question, does Awake get called on Initialize or not...
             GameObject spawnedEvent = Instantiate(eventPrefab);
@@ -107,7 +112,6 @@ public class EventSpawnerSystem : MonoBehaviour
 
     private void EmptyButtons()
     {
-        
         foreach (GameObject button in buttons)
         {
             Destroy(button);
