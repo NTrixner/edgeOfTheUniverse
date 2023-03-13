@@ -15,7 +15,7 @@ public class WormholeEvent : MonoBehaviour, BaseEvent
     void Awake()
     {
         EndEvent = new UnityEvent();
-        maxDistanceGain = Random.Range(1000, 90000000);
+        maxDistanceGain = Random.Range(5000, 999999999);
         maxDistanceLoss = Random.Range(5000, 999999999);
     }
 
@@ -53,29 +53,42 @@ public class WormholeEvent : MonoBehaviour, BaseEvent
 
     private string Jump()
     {
-        long distanceChange = (long)Random.Range(-maxDistanceLoss, maxDistanceGain);
-        FTLMovement.INSTANCE.lightYearsLeftToGo -= distanceChange;
-        if (distanceChange <= -10000)
+        float roll = Random.Range(0f, 1f);
+        if (roll < 0.5f)
         {
-            return
-                $"Well that sucks, we landed {(long)Math.Abs(distanceChange)} light years further back than we started. Oh well";
-        }
+            // Backwards
+            long distanceChange = (long)Random.Range(0, maxDistanceLoss);
+            
+            FTLMovement.INSTANCE.lightYearsLeftToGo -= distanceChange;
+            if (distanceChange >= 10000)
+            {
+                return
+                    $"Well that sucks, we landed {(long)Math.Abs(distanceChange)} light years further back than we started. Oh well";
+            }
+            if (distanceChange > 0)
+            {
+                return
+                    $"Well, we didn't change MUCH. {(long)Math.Abs(distanceChange)} light years back. We'll get that back in no time.";
+            }
 
-        if (distanceChange >= 10000)
-        {
-            return $"Awesome! We were catapulted {distanceChange} light years forward. That was real fun!";
         }
-
-        if (distanceChange < 0)
+        else if(roll > 0.5f)
         {
-            return
-                $"Well, we didn't change MUCH. {(long)Math.Abs(distanceChange)} light years back. We'll get that back in no time.";
-        }
+            //Forward
+            long distanceChange = (long)Random.Range(0, maxDistanceGain);
+            
+            FTLMovement.INSTANCE.lightYearsLeftToGo += distanceChange;
 
-        if (distanceChange > 0)
-        {
-            return
-                $"Well, we didn't change MUCH. {(long)Math.Abs(distanceChange)} light years forward. Better than nothing I guess.";
+            if (distanceChange >= 10000)
+            {
+                return $"Awesome! We were catapulted {distanceChange} light years forward. That was real fun!";
+            }
+
+            if (distanceChange > 0)
+            {
+                return
+                    $"Well, we didn't change MUCH. {(long)Math.Abs(distanceChange)} light years forward. Better than nothing I guess.";
+            }
         }
 
         return $"Wait, what? We didn't move at all! What a scam.";
