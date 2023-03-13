@@ -133,7 +133,7 @@ public class StellarBodyEvent : MonoBehaviour, BaseEvent
                     amountFoodFound = Resources.INSTANCE.MaxFood - Resources.INSTANCE.Food;
                 }
 
-                Resources.INSTANCE.Materials += amountFoodFound;
+                Resources.INSTANCE.Food += amountFoodFound;
                 float amountMatsFound = Random.Range(01f, 0.5f) * clonesSent * 5f;
                 if (amountMatsFound > Resources.INSTANCE.MaxMaterials - Resources.INSTANCE.Materials)
                 {
