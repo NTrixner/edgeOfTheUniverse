@@ -31,6 +31,7 @@ public class FTLMovement : MonoBehaviour
 
     public float timeToStop = 1.5f;
 
+    public bool paused = false;
     private void Awake()
     {
         if (INSTANCE != null)
@@ -88,7 +89,7 @@ public class FTLMovement : MonoBehaviour
                 timePassedSinceStop = 0f;
             }
         }
-        if (isFTL)
+        if (isFTL && !paused)
         {
             lightYearsLeftToGo -= speed * Time.deltaTime / DayCounter.INSTANCE.DayLength;
             Resources.INSTANCE.Energy = Mathf.Max(0,Resources.INSTANCE.Energy - energyUsage * Time.deltaTime);
@@ -97,7 +98,7 @@ public class FTLMovement : MonoBehaviour
                 OnTravelButtonClicked();
             }
         }
-        else
+        else if (!paused)
         {
             Resources.INSTANCE.Energy = Mathf.Min(Resources.INSTANCE.Energy + energyRestoration * Time.deltaTime, Resources.INSTANCE.MaxEnergy);
         }
@@ -114,12 +115,13 @@ public class FTLMovement : MonoBehaviour
 
     public void Enable()
     {
+        paused = false;
         FTLButton.transform.parent.GetComponent<Button>().enabled = true;
     }
 
     public void Disable()
     {
+        paused = true;
         FTLButton.transform.parent.GetComponent<Button>().enabled = false;
-        
     }
 }
