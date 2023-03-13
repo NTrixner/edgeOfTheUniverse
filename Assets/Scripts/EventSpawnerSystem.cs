@@ -31,7 +31,6 @@ public class EventSpawnerSystem : MonoBehaviour
     public int MinDays = 5;
     public int MaxDays = 25;
 
-    public int AdditionalWeirdChance = 0;
     private void Awake()
     {
         if (INSTANCE != null)
@@ -115,28 +114,34 @@ public class EventSpawnerSystem : MonoBehaviour
         }
     }
 
+    public void IncreaseWeirdChance()
+    {
+        foreach(EventChance chance in EventChances)
+        {
+            if (!(GetEventComp(chance.EventPrefab) is StellarBodyEvent))
+            {
+                chance.weight += 1;
+            }
+        }
+    }
     //Love these btw.
     private GameObject GetRandomEvent()
     {
         int totalChance = 0;
         foreach(EventChance chance in EventChances)
         {
-            if (!(GetEventComp(chance.EventPrefab) is StellarBodyEvent))
-            {
-                chance.weight += AdditionalWeirdChance;
-            }
             totalChance += chance.weight;
         }
 
         int roll = Random.Range(1, totalChance);
         foreach (EventChance chance in EventChances)
         {
-            if (roll <= chance.weight)
+            roll -= chance.weight;
+            if (roll <= 0)
             {
                 return chance.EventPrefab;
             }
 
-            roll -= chance.weight;
         }
         return EventChances[^1].EventPrefab;
     }

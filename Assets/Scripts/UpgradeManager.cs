@@ -179,7 +179,7 @@ public class UpgradeManager : MonoBehaviour
 
     private static void LevelUpChanceOtherEvents()
     {
-        EventSpawnerSystem.INSTANCE.AdditionalWeirdChance += 1;
+        EventSpawnerSystem.INSTANCE.IncreaseWeirdChance();
     }
 
     private static void LevelUpEventChance()
