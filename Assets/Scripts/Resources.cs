@@ -95,7 +95,7 @@ public class Resources : MonoBehaviour
 
     private void ProduceFoodDaily()
     {
-        Food += FoodProduction;
+        Food = Math.Min(Food + FoodProduction, MaxFood);
     }
 
     private void CheckIfWarning()
