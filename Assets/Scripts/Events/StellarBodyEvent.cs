@@ -29,7 +29,7 @@ public class StellarBodyEvent : MonoBehaviour, BaseEvent
         type = Random.Range(0f, 1f) <= 0.5f ? "Asteroid" : "Planet";
         name = GetStellarBodyName(type);
         name = char.ToUpper(name[0]) + name.Substring(1);
-        chance = Random.Range(0.25f, 0.75f);
+        chance = Random.Range(0.15f, 0.5f);
     }
 
     public string GetDescription()
