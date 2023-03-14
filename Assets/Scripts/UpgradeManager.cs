@@ -20,6 +20,7 @@ public class UpgradeManager : MonoBehaviour
     private const string Materialsstorage = "materialsStorage";
     private const string Eventchance = "eventChance";
     private const string Weirdchance = "weirdChance";
+    private const string CloneSuccess = "cloneSuccess";
     public static UpgradeManager INSTANCE;
 
     public class Upgrade
@@ -144,9 +145,21 @@ public class UpgradeManager : MonoBehaviour
                 name = "Weirdness", currentLevel = 1, lastLevelCost = 0, cost_constant = 500,
                 upgradeFunction = LevelUpChanceOtherEvents
             }
+        },
+        {
+            CloneSuccess,
+            new Upgrade()
+            {
+                name = "Intelligent Clones", currentLevel = 1, lastLevelCost = 0, cost_constant = 100,
+                upgradeFunction =  LevelUpCloneSuccess
+            }
         }
     };
 
+    private static void LevelUpCloneSuccess()
+    {
+        Resources.INSTANCE.CloneSuccess += 0.9f;
+    }
 
     public Dictionary<string, string> UpgradeDescriptions = new()
     {
@@ -156,14 +169,15 @@ public class UpgradeManager : MonoBehaviour
         { Fueltank, "Increases the amount of fuel you can store." },
         { Quarterssize, "Increases the amount of clones you can have." },
         { Clonechance, "Increases the daily chance of a cloning going right." },
-        { Cloneproduction, "Increases the chance of a clone being created." },
+        { Cloneproduction, "Increases the amount of clones being created if a cloning goes right." },
         { Foodstorage, "Increases the amount of food you can store." },
         { Foodproduction, "Increases the amount of food you're producing per day." },
         { Oxygentank, "Increases the amount of oxygen you can store." },
         { Oxygenproduction, "Increases the amount of oxygen you gain per day." },
         { Materialsstorage, "Increases the amount of materials you can store." },
         { Eventchance, "Increases the chance of you encountering events." },
-        { Weirdchance, "Increases the chance of you encountering weird events." }
+        { Weirdchance, "Increases the chance of you encountering weird events." },
+        { CloneSuccess, "Increases the chance of your clones being successful in a ground mission"}
     };
 
     private void Awake()
@@ -240,7 +254,7 @@ public class UpgradeManager : MonoBehaviour
 
     private static void LevelUpEngineEfficiency()
     {
-        FTLMovement.INSTANCE.energyUsage *= 0.1f;
+        FTLMovement.INSTANCE.energyUsage *= 0.9f;
     }
 
     static void LevelUpEngineSpeed()

@@ -36,6 +36,7 @@ public class Resources : MonoBehaviour
 
     public float FoodProduction = 0.05f;
 
+    public float CloneSuccess = 1.0f;
 
     [SerializeField] private TextMeshProUGUI ClonesNumber;
     [SerializeField] private TextMeshProUGUI FoodNumber;
